@@ -1,4 +1,5 @@
 use axum::{routing::get, Router, response::Html};
+use tokio::fs::read_to_string;
 
 #[tokio::main]
 async fn main() {
@@ -32,7 +33,7 @@ async fn root() -> Html<String> {
 "#.to_string())
 }
 
-async fn about() -> Html<String> { Html("I'm super cool".to_string()) }
+async fn about() -> Html<String> { Html(read_to_string("./content/about.html").await.unwrap()) }
 
 async fn blog() -> Html<String> { 
     Html(r#"
