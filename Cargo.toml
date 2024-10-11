@@ -4,5 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+askama = { version = "0.12.1", features = ["markdown"] }
 axum = "0.7.5"
 tokio = { version = "1.40.0", features = ["fs", "macros", "rt-multi-thread"] }
+tower-http = { version = "0.5.2", features = ["full", "tokio"] }

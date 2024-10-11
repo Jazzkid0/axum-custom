@@ -1,12 +1,25 @@
 use axum::{routing::get, Router, response::Html};
+use askama::Template;
+use tower_http::services::ServeDir;
 use tokio::fs::read_to_string;
+use std::sync::Arc;
+
+#[derive(Debug, Clone)]
+pub struct Post {
+    pub post_title: String,
+    pub post_date: String,
+    pub post_body: String,
+}
 
 #[tokio::main]
 async fn main() {
+
+    // get posts
+
     let app = Router::new()
         .route("/", get(root))
         .route("/about", get(about))
-        .route("/blog", get(blog).post(blog2));
+        .route("/testblog", get(testblog).post(blog2));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
     axum::serve(listener, app).await.unwrap();
@@ -27,15 +40,15 @@ async fn root() -> Html<String> {
 
     <ul>
         <li><a href="/about">about</a></li>
-        <li><a href="/blog">blog</a></li>
+        <li><a href="/testblog">blog</a></li>
     </ul>
 </body>
 "#.to_string())
 }
 
-async fn about() -> Html<String> { Html(read_to_string("./content/about.html").await.unwrap()) }
+async fn about() -> Html<String> { Html(read_to_string("./assets/about.html").await.unwrap()) }
 
-async fn blog() -> Html<String> { 
+async fn testblog() -> Html<String> { 
     Html(r#"
 <!DOCTYPE html>
 <html lang="en">
